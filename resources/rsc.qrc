@@ -1,0 +1,25 @@
+<RCC>
+    <qresource prefix="/coco/audio">
+        <file>coco.mp3</file>
+    </qresource>
+    <qresource prefix="/coco/gifs">
+        <file>coco_eat.gif</file>
+        <file>coco_sleep.gif</file>
+        <file>coco_swim.gif</file>
+        <file>coco1.gif</file>
+    </qresource>
+    <qresource prefix="/coco/pics">
+        <file>coco_has_eaten.png</file>
+        <file>empty_nest.bmp</file>
+        <file>refuse.png</file>
+    </qresource>
+    <qresource prefix="/racing">
+        <file>Enemy.png</file>
+        <file>MyCar.png</file>
+        <file>trackbackground1.png</file>
+        <file>trackbackground2.png</file>
+    </qresource>
+    <qresource prefix="/backgrounds">
+        <file>go.jpg</file>
+    </qresource>
+</RCC>
