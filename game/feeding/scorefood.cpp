@@ -1,10 +1,10 @@
-#include "score.h"
+#include "scoreFood.h"
 #include <QFont>
-#include "racing.h"
+#include "feeding.h"
 
-extern Racing * rc;
+extern Feeding * fd;
 
-Score::Score(QGraphicsTextItem *parent):QGraphicsTextItem(parent)
+scoreFood::scoreFood(QGraphicsTextItem *parent):QGraphicsTextItem(parent)
 {
     score = 0;
     setPlainText(QString("Score: ") + QString::number(score));
@@ -12,17 +12,16 @@ Score::Score(QGraphicsTextItem *parent):QGraphicsTextItem(parent)
     setFont(QFont("times",16));
 }
 
-void Score::increase()
+void scoreFood::increase()
 {
     score++;
     if( (score >= 1) && (score % 10 == 0) ){
-        emit rc->addHappy(20);
+        emit fd->addHappy(20);
     }
     setPlainText(QString("Score: ") + QString::number(score));
 }
 
-int Score::getScore()
+int scoreFood::getScore()
 {
     return score;
 }
-

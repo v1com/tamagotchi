@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <typeinfo>
 #include "racing.h"
+#include <time.h>
 
 extern Racing * rc;
 
@@ -15,6 +16,8 @@ Enemy::Enemy(QObject * parent) :QObject(parent),QGraphicsPixmapItem()
     posEnemy[0]=17;
     posEnemy[1]=121;
     posEnemy[2]=225;
+
+    srand(time(NULL));
 
     int random_number = posEnemy[rand() % 3];
 

@@ -104,9 +104,9 @@ void GameWidget::toWakeUp()
     m_timer->start(10000);
 }
 
-void GameWidget::toPlay(int)
+void GameWidget::toPlay(int happynessPoint)
 {
-    m_pet->play(30);
+    m_pet->play(happynessPoint);
 }
 
 void GameWidget::toKillPet()
