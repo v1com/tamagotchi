@@ -1,9 +1,11 @@
 #include "racing.h"
 
-Racing::Racing(QWidget * parent)
+Racing::Racing(QWidget * parent):QGraphicsView(parent)
 {
+    setFocusPolicy(Qt::NoFocus);
     //add scene
     scene = new Track();
+    scene->clearFocus();
     scene->setSceneRect(0,0,300,410);
     setScene(scene);
 
@@ -11,15 +13,11 @@ Racing::Racing(QWidget * parent)
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(310,420);
-    this->setFocusPolicy(Qt::ClickFocus);
 
     //add player car
     player = new Player(this);
     scene->addItem(player);
-    player->setPos(121,295);
-    player->setFlag(QGraphicsItem::ItemIsFocusable);
-
-
+    player->setFocus();
     QTimer * spawnTimer = new QTimer(this);
     QObject::connect(spawnTimer,SIGNAL(timeout()),this,SLOT(spawn()));
     spawnTimer->start(1500);
@@ -27,8 +25,9 @@ Racing::Racing(QWidget * parent)
     //add score
     score = new Score();
     scene->addItem(score);
-    player->setFocus();
 
+
+    player->setFocus();
 
 }
 
@@ -37,6 +36,18 @@ Racing::~Racing()
     delete score;
     delete player;
     emit addHappy(-5);
+}
+
+void Racing::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Left){
+        if(player->pos().x() > 60)
+        player->setPos(player->x()-104,player->y());
+    }
+    else if(event->key() == Qt::Key_Right){
+        if(player->pos().x() < 200)
+        player->setPos(player->x()+104,player->y());
+    }
 }
 
 void Racing::spawn(){

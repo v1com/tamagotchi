@@ -17,7 +17,12 @@ HEADERS += \
     screencontroller.h \
     gamescreen.h \
     game/refuse.h \
-    gameover.h
+    gameover.h \
+    game/feeding/basket.h \
+    game/feeding/feeding.h \
+    game/feeding/food.h \
+    game/feeding/scorefood.h \
+    menuforgames.h
 
 SOURCES += \
     main.cpp \
@@ -37,7 +42,12 @@ SOURCES += \
     screencontroller.cpp \
     gamescreen.cpp \
     game/refuse.cpp \
-    gameover.cpp
+    gameover.cpp \
+    game/feeding/basket.cpp \
+    game/feeding/feeding.cpp \
+    game/feeding/food.cpp \
+    game/feeding/scorefood.cpp \
+    menuforgames.cpp
 
 FORMS += \
     authorization.ui \

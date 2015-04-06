@@ -2,7 +2,7 @@
 #define ENEMY_H
 
 #include <QObject>
-#include <QGraphicsPixmapItem>
+#include <QGraphicsRectItem>
 #include <QList>
 #include "racing.h"
 
