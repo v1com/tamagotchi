@@ -22,4 +22,25 @@
     <qresource prefix="/backgrounds">
         <file>go.jpg</file>
     </qresource>
+    <qresource prefix="/feeding">
+        <file>apple22.png</file>
+        <file>apple33.png</file>
+        <file>apple44.png</file>
+        <file>backgroundPark.jpg</file>
+        <file>backgroundPark.png</file>
+        <file>backgroundPark1.png</file>
+        <file>banana23.png</file>
+        <file>banana34.png</file>
+        <file>banana45.png</file>
+        <file>basket.png</file>
+        <file>cherry25.png</file>
+        <file>cherry33.png</file>
+        <file>cherry41.png</file>
+        <file>pear23.png</file>
+        <file>pear34.png</file>
+        <file>pear45.png</file>
+        <file>strawberry20.png</file>
+        <file>strawberry30.png</file>
+        <file>strawberry40.png</file>
+    </qresource>
 </RCC>

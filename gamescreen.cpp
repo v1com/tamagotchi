@@ -1,12 +1,11 @@
 #include "gamescreen.h"
 #include "ui_gamescreen.h"
 #include "game/racing/racing.h"
+#include "menuforgames.h"
 #include <QPushButton>
 #include <QFont>
 #include <QPixmap>
 #include <QPalette>
-
-extern Racing * rc;
 
 GameScreen::GameScreen(QWidget *parent) :
     QWidget(parent),
@@ -25,13 +24,15 @@ GameScreen::GameScreen(QWidget *parent) :
 
     ui->toWakeUp->hide();
 
-    connect(btn, SIGNAL(clicked()),this,SLOT(newRacing()));
-
     connect(ui->toSleep, SIGNAL(clicked()),btn, SLOT(hide()));
     connect(ui->toWakeUp, SIGNAL(clicked()), btn, SLOT(show()));
     connect(this, SIGNAL(sendPlayer(QString)), ui->widget->getPet(), SLOT(setPlayer(QString)));
     connect(ui->widget->getPet(), SIGNAL(ageChange(qlonglong)), this, SLOT(setAge(qlonglong)));
     connect(ui->widget->getPet(), SIGNAL(death()), this, SLOT(gameOver()));
+
+    MenuForGames * miniGameMenu = new MenuForGames(NULL);
+    connect(btn,SIGNAL(clicked()),miniGameMenu,SLOT(show()));
+    connect(miniGameMenu,SIGNAL(addHappy(int)),ui->widget,SLOT(toPlay(int)));
 
  /*   QPixmap pix;
     pix.load("H:\\img.jpg");
@@ -43,21 +44,6 @@ GameScreen::GameScreen(QWidget *parent) :
 GameScreen::~GameScreen()
 {
     delete ui;
-}
-
-void GameScreen::newRacing()
-{
-    rc = new Racing();
-    rc->show();
-    rc->setFocus();
-    rc->setAttribute(Qt::WA_DeleteOnClose);
-    connect(rc,SIGNAL(addHappy(int)),ui->widget,SLOT(toPlay(int)));
-    connect(rc,SIGNAL(destroyed()),this,SLOT(setVisible(bool)));
-}
-
-void GameScreen::deleteRacing()
-{
-    delete rc;
 }
 
 void GameScreen::receivePlayer(QString name)

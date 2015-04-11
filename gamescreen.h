@@ -19,8 +19,8 @@ signals:
     void sendPlayer(QString);
     void toGameOver();
 public slots:
-    void newRacing();
-    void deleteRacing();
+  //  void newRacing();
+   // void deleteRacing();
     void receivePlayer(QString);
     void setAge(qlonglong);
     void newGame(QString);

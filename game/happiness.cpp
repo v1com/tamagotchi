@@ -19,6 +19,9 @@ Happiness::~Happiness()
 void Happiness::setHappiness(int points)
 {
     happinessLevel = points;
+    if(happinessLevel <= 0)
+        happinessLevel = 0;
+    emit changeLevel(happinessLevel);
 }
 
 int Happiness::getHappiness()

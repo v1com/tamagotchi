@@ -18,6 +18,7 @@ class Racing : public QGraphicsView
 public:
     Racing(QWidget *parent = 0);
     ~Racing();
+    void keyPressEvent(QKeyEvent *event);
     Score * score;
 signals:
     void addHappy(int);
@@ -26,4 +27,3 @@ public slots:
 };
 
 #endif // RACING_H
-
