@@ -20,12 +20,17 @@ m_scene(new QGraphicsScene(this)), m_view(new QGraphicsView(m_scene, this)){
     QGridLayout *layout = new QGridLayout(NULL);
     m_timer = new QTimer(this);
 
+    m_scene->setSceneRect(0,0,400,220);
+    m_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
     layout->setMargin(0);
     m_view->setFixedSize(400,220);
     layout->addWidget(m_view, 0, 0, 1, 1);
     settings = new QSettings("gameSettings");
 
     m_pet = new Pet();
+    m_pet->move(150,60);
     m_pet->action(Nothing);
 
     connect(m_pet, SIGNAL(chHealthSgn(int)), this,SLOT(chHealthSlt(int)));
@@ -122,13 +127,12 @@ void GameWidget::setRefuse()
     Refuse *ref = new Refuse(NULL);
     connect(ref, SIGNAL(deleted(Refuse*)),this, SLOT(destroyRefuse(Refuse *)));
     QGraphicsProxyWidget *proxy = m_scene->addWidget(ref);
-    int x = rand()%300-150;
-    int y = rand()%40-25;
 
+    int x = rand()%370;
+    int y = rand()%40+160;
     proxy->setPos(x,y);
+
     m_pet->refuseExists();
- //   qDebug() << proxy->pos();
-    //  m_scene->update();
 }
 
 void GameWidget::setRefuses(int count)

@@ -8,7 +8,5 @@ int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
     ScreenController sc;
     sc.show();
-
     return a.exec();
 }
-
