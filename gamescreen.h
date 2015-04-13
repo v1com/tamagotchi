@@ -18,6 +18,7 @@ public:
 signals:
     void sendPlayer(QString);
     void toGameOver();
+    void toMainWindow();
 public slots:
   //  void newRacing();
    // void deleteRacing();
@@ -25,6 +26,7 @@ public slots:
     void setAge(qlonglong);
     void newGame(QString);
     void gameOver();
+    void mainWindow();
 private:
     Ui::GameScreen *ui;
 };

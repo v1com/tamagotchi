@@ -6,7 +6,7 @@ Refuse::Refuse(QWidget *parent) :
     QWidget(parent), m_label(new QLabel(this))
 {
     QPixmap pix;
-    pix.load(":/coco/pics/refuse.png");
+    pix.load(":/pets/coco/pics/refuse.png");
     m_label->setPixmap(pix);
     resize(50,50);
     setAttribute(Qt::WA_NoSystemBackground);

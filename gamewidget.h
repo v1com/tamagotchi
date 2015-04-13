@@ -41,6 +41,7 @@ public slots:
     void toPlay(int);
     void toKillPet();
     void setRefuse();
+    void setRefuses(int);
     void destroyRefuse(Refuse *);
     void createPet();
 

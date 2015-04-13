@@ -33,6 +33,7 @@ void ScreenController::onGame(QString name)
     gs = new GameScreen(this);
     connect(this, SIGNAL(player(QString)), gs, SLOT(receivePlayer(QString)));
     connect(gs, SIGNAL(toGameOver()), this, SLOT(onGameOver()));
+    connect(gs, SIGNAL(toMainWindow()), this, SLOT(onMain()));
     qDebug()<<name;
     emit player(name);
     layout->addWidget(gs, 0, 0, 1, 1);
@@ -51,6 +52,7 @@ void ScreenController::onNewGame()
     //    gs->deleteLater();
     gs = new GameScreen(this);
     connect(this, SIGNAL(newGame(QString)), gs, SLOT(newGame(QString)));
+    connect(gs, SIGNAL(toMainWindow()), this, SLOT(onMain()));
     emit newGame(currentPlayer);
     layout->addWidget(gs, 0, 0, 1, 1);
     au->hide();
@@ -63,4 +65,10 @@ void ScreenController::onGameOver()
     go->show();
     gs->deleteLater();
     au->hide();
+}
+
+void ScreenController::onMain()
+{
+    au->show();
+    gs->deleteLater();
 }

@@ -23,6 +23,7 @@ m_scene(new QGraphicsScene(this)), m_view(new QGraphicsView(m_scene, this)){
     layout->setMargin(0);
     m_view->setFixedSize(400,220);
     layout->addWidget(m_view, 0, 0, 1, 1);
+    settings = new QSettings("gameSettings");
 
     m_pet = new Pet();
     m_pet->action(Nothing);
@@ -33,15 +34,16 @@ m_scene(new QGraphicsScene(this)), m_view(new QGraphicsView(m_scene, this)){
     connect(m_pet, SIGNAL(chSatSgn(int)), this, SLOT(chSatSlt(int)));
     connect(m_timer, SIGNAL(timeout()), this, SLOT(setRefuse()));
     connect(m_pet, SIGNAL(death()), this, SLOT(toKillPet()));
+    connect(m_pet, SIGNAL(count_ref(int)), this, SLOT(setRefuses(int)));
 
     m_scene->addWidget(m_pet);
-    m_timer->start(10000);
+    m_timer->start(1800000);
     setStyleSheet(
     "* { background-color: rgba(176, 196, 222, 255); }"
                 );
-  //  settings = new QSettings("gameSettings");
+      settings = new QSettings("gameSettings");
   //  count_ref = settings->value(m_pet->getPlayer() + "/count_ref").toInt();
-  //  qDebug() << settings->value(m_pet->getPlayer() + "/count_ref");
+  //  qDebug() <<"ffffffffff"<< settings->allKeys();
   //  for(int i = 0; i < count_ref; i++)
   //      setRefuse();
 }
@@ -53,8 +55,8 @@ Pet *GameWidget::getPet()
 
 GameWidget::~GameWidget()
 {
-  //  settings->setValue(m_pet->getPlayer() + "/count_ref", count_ref);
-  //  settings->sync();
+    settings->setValue(m_pet->getPlayer() + "/count_ref", count_ref);
+    settings->sync();
 }
 
 void GameWidget::chHealthSlt(int level)
@@ -90,7 +92,7 @@ void GameWidget::toSleep()
 
 void GameWidget::toWash()
 {
-    m_pet->wash(50);
+    m_pet->wash(20);
 }
 
 void GameWidget::toCure()
@@ -101,7 +103,7 @@ void GameWidget::toCure()
 void GameWidget::toWakeUp()
 {
     m_pet->wakeup();
-    m_timer->start(10000);
+    m_timer->start(60000);
 }
 
 void GameWidget::toPlay(int happynessPoint)
@@ -126,7 +128,13 @@ void GameWidget::setRefuse()
     proxy->setPos(x,y);
     m_pet->refuseExists();
  //   qDebug() << proxy->pos();
-  //  m_scene->update();
+    //  m_scene->update();
+}
+
+void GameWidget::setRefuses(int count)
+{
+    for(int i = 0; i < count; i++)
+        setRefuse();
 }
 
 void GameWidget::destroyRefuse(Refuse *ref)

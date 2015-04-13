@@ -6,7 +6,7 @@ Health::Health(QObject *parent) :
     QObject(parent)
 {
     healthLevel = 100;
-    speedDecrease = 50000;
+    speedDecrease = 360000;
     ptimer = new QTimer(this);
     connect(ptimer,SIGNAL(timeout()),SLOT(reductionHealth()));
     ptimer->start(speedDecrease);
@@ -47,8 +47,8 @@ void Health::upSpeed(float speed)
     speedDecrease = int(speedDecrease/speed);
     if(speedDecrease <= 10000)
         speedDecrease = 10000;
-    if(speedDecrease >= 50000)
-        speedDecrease = 50000;
+    if(speedDecrease >= 360000)
+        speedDecrease = 360000;
     ptimer->setInterval(speedDecrease);
     qDebug() <<"New interval: " << speedDecrease;
 }

@@ -23,6 +23,7 @@ public slots:
     void setPlayer(QString);
     void onNewGame();
     void onGameOver();
+    void onMain();
 protected:
     GameScreen *gs;
     Authorization * au;

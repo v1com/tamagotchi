@@ -5,7 +5,7 @@ Satiety::Satiety(QObject *parent) :
     QObject(parent)
 {
     satietyLevel = 100;
-    speedSatiety = 10000;
+    speedSatiety = 60000;
     ptimer = new QTimer();
     connect(ptimer,SIGNAL(timeout()),this, SLOT(reductionSatiety()));
     ptimer->start(speedSatiety);

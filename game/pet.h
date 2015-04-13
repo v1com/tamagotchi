@@ -9,13 +9,13 @@
 #include "energy.h"
 #include <QSettings>
 #include <QDateTime>
+#include <QMediaPlayer>
+#include <QMediaPlaylist>
 
 enum State {
   Nothing, Feeding, Sleeping, Washing, Curing, Playing
 };
 
-class QMediaPlayer;
-class QMediaPlaylist;
 class QLabel;
 
 class Pet : public QWidget
@@ -32,6 +32,10 @@ class Pet : public QWidget
     qlonglong minutes;
     QString player;
     QTimer* lifeTimer;
+    QString name;
+    int who; // 0 - egg, 1 - coco, 2 - raccoon, 3 - unicorn, 4 - dragon
+    int count;
+    int stage_egg; // from 1 to 4
 public:
     explicit Pet(QWidget *parent = 0);
     ~Pet();
@@ -42,6 +46,9 @@ public:
     int getSatiety();
     int getEnergy();
     QString getPlayer();
+    void setPet(int pet);
+    void mousePressEvent(QMouseEvent * e);
+    QDateTime getLife();
 signals:
     void chHealthSgn(int);
     void chHapSgn(int);
@@ -52,6 +59,8 @@ signals:
     void wakeupSgn(int);
     void ageChange(qlonglong);
     void death();
+    void birth();
+    void count_ref(int);
 public slots:
     void chHealthSlt(int);
     void chHapSlt(int);
@@ -72,6 +81,7 @@ public slots:
     void refuseExists();
     void refuseDestroyed();
     void newGame(QString);
+    void setConnects();
 protected:
     QMovie *m_animation;
     QLabel *m_label;

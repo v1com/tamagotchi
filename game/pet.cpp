@@ -6,18 +6,20 @@
 #include <QTimerEvent>
 #include <QSettings>
 #include <QDebug>
+#include <QTime>
 
 Pet::Pet(QWidget *parent) :
     QWidget(parent), m_animation(new QMovie(this)), m_label(new QLabel(this)),
     m_player(new QMediaPlayer(this)),
     m_playlist(new QMediaPlaylist(m_player)){
 
+    settings = new QSettings("gameSettings");
+    count = 0;
+    stage_egg = 1;
+    factorPoints = 1;
+
     minutes = 0;
     lifeTimer = new QTimer(this);
-    connect(lifeTimer, SIGNAL(timeout()), this, SLOT(lifeTime()));
-    lifeTimer->start(60000);
-
-    settings = new QSettings("gameSettings");
 
     setAttribute(Qt::WA_NoSystemBackground);
     ptimer = new QTimer(this);
@@ -29,29 +31,7 @@ Pet::Pet(QWidget *parent) :
     resize(100,100);
     m_animation->setScaledSize(size());
 
-    m_player->setPlaylist(m_playlist);
-    m_playlist->addMedia(QUrl("qrc:/coco/audio/coco.mp3"));
-    m_playlist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
-
-    action(Nothing);
-
-    connect(&health, SIGNAL(changeLevel(int)), this, SLOT(chHealthSlt(int)));
-    connect(&happiness, SIGNAL(changeLevel(int)), this, SLOT(chHapSlt(int)));
-    connect(&satiety, SIGNAL(changeLevel(int)), this, SLOT(chSatSlt(int)));
-    connect(&energy, SIGNAL(changeLevel(int)), this, SLOT(chEnSlt(int)));
-
-
-    connect(&satiety,SIGNAL(satietyNow(float)),&health,SLOT(upSpeed(float)));
-    connect(&happiness, SIGNAL(factorPoints(int)), this, SLOT(setFactor(int)));
-
-    connect(this, SIGNAL(wakeupSgn(int)),&energy, SLOT(reductionEnergy()));
-    connect(this, SIGNAL(wakeupSgn(int)),&satiety, SLOT(changeSpeed(int)));
-    connect(this, SIGNAL(wakeupSgn(int)),&happiness, SLOT(changeSpeed(int)));
-
-    connect(this, SIGNAL(sleepSgn(int)),&energy, SLOT(recoveryEnergy()));
-    connect(this, SIGNAL(sleepSgn(int)), &satiety, SLOT(changeSpeed(int)));
-    connect(this, SIGNAL(sleepSgn(int)), &happiness, SLOT(changeSpeed(int)));
-
+    setPet(0);
 }
 
 Pet::~Pet()
@@ -73,32 +53,41 @@ void Pet::action(State state)
 {
     switch(state) {
         case Nothing:
-            animation(":/coco/gifs/coco1.gif");
-            m_player->play();
+            if(who == 0)
+                animation(":pets/egg/egg1.png");
+            else{
+                animation(":/pets/" + name + "/gifs/" + name + "1.gif");
+                m_player->playlist()->setCurrentIndex(0);
+                m_player->play();
+            }
             break;
         case Feeding:
-            animation(":/coco/gifs/coco_eat.gif");
+            animation(":/pets/" + name + "/gifs/" + name + "_eat.gif");
+            m_player->playlist()->setCurrentIndex(1);
             m_player->play();
             ptimer->start(5000);
             break;
         case Sleeping:
-            animation(":/coco/gifs/coco_sleep.gif");
+            animation(":/pets/" + name + "/gifs/" + name + "_sleep.gif");
             m_player->stop();
             break;
         case Washing:
-            animation(":/coco/gifs/coco_swim.gif");
+            animation(":/pets/" + name + "/gifs/" + name + "_swim.gif");
+         //   m_playlist->addMedia(QUrl("qrc:/pets/coco/audio/swim.mp3"));
+            m_player->playlist()->setCurrentIndex(2);
             m_player->play();
             ptimer->start(5000);
             break;
         case Curing:
-            animation(":/coco/gifs/coco_swim.gif");
-            m_player->play();
+            animation(":/pets/curing/syringe.gif");
+         //   m_player->playlist()->setCurrentIndex(0);
+          //  m_player->play();
             ptimer->start(5000);
             break;
         case Playing:
-            animation(":/coco/gifs/coco_swim.gif");
-            m_player->play();
-            ptimer->start(5000);
+         //   animation(":/pets/" + name + "/gifs/" + name + "_swim.gif");
+         //   m_player->play();
+        //    ptimer->start(5000);
             break;
     }
 }
@@ -126,6 +115,84 @@ int Pet::getEnergy()
 QString Pet::getPlayer()
 {
     return player;
+}
+
+void Pet::setPet(int pet)
+{
+    switch(pet){
+    case 0:
+        who = 0;
+        name = "egg";
+        qDebug() << "egg";
+        break;
+    case 1:
+        who = 1;
+        name = "coco";
+        qDebug() << "coco";
+        setConnects();
+        break;
+    case 2:
+        who = 2;
+        name = "raccoon";
+        qDebug() << "raccoon";
+        setConnects();
+        break;
+    case 3:
+        who = 3;
+        name = "unicorn";
+        qDebug() << "unicorn";
+        setConnects();
+        break;
+    case 4:
+        who = 4;
+        name = "dragon";
+        qDebug() << "dragon";
+        setConnects();
+        break;
+    }
+ //   action(Nothing);
+}
+
+void Pet::mousePressEvent(QMouseEvent *e)
+{
+    if(who == 0){
+        count++;
+        if(count == 2*stage_egg && stage_egg < 4)
+        {
+            stage_egg++;
+            count = 0;
+            animation(":pets/egg/egg" + QString::number(stage_egg) + ".png");
+        }
+        else if(stage_egg == 4)
+        {
+            animation(":pets/egg/egg" + QString::number(stage_egg) + ".png");
+            stage_egg++;
+        }
+        if(stage_egg > 4){
+            QTime midnight(0,0,0);
+            qsrand(midnight.secsTo(QTime::currentTime()));
+            who = qrand() % 4 + 1;
+            settings->setValue(player + "/who", who);
+          //  setConnects();
+            setPet(who);
+            qDebug() << who;
+            m_playlist->addMedia(QUrl("qrc:/pets/" + name + "/audio/" + name + ".mp3"));
+            m_playlist->addMedia(QUrl("qrc:/pets/" + name + "/audio/" + name + "_feed.mp3"));
+            if(who == 4)
+                m_playlist->addMedia(QUrl("qrc:/pets/dragon/audio/dragon_swim.mp3"));
+            else
+                m_playlist->addMedia(QUrl("qrc:/pets/coco/audio/swim.mp3"));
+            m_playlist->setPlaybackMode(QMediaPlaylist::CurrentItemOnce);
+            m_player->setPlaylist(m_playlist);
+            action(Nothing);
+        }
+
+    }
+}
+
+QDateTime Pet::getLife()
+{
+    return life;
 }
 
 
@@ -161,15 +228,22 @@ void Pet::chSatSlt(int satiety)
 
 void Pet::feed(int points)
 {
+    qDebug() << "factorPoints" << factorPoints;
     satiety.setSatiety(satiety.getSatiety() + points/factorPoints);
     if(satiety.getSatiety() > 100)
         satiety.setSatiety(100);
     action(Feeding);
+    emit chSatSgn(satiety.getSatiety());
 }
 
 void Pet::cure()
 {
     health.setHealthLevel(100);
+    happiness.setHappiness(happiness.getHappiness() - 20);
+    if(happiness.getHappiness() <= 0)
+        happiness.setHappiness(0);
+    emit chHealthSgn(health.getHealthLevel());
+    emit chHapSgn(happiness.getHappiness());
     action(Curing);
 }
 
@@ -191,6 +265,7 @@ void Pet::wash(int points)
     if(health.getHealthLevel() >= 100)
         health.setHealthLevel(100);
     action(Washing);
+    emit chHealthSgn(health.getHealthLevel());
 }
 
 void Pet::play(int points)
@@ -198,6 +273,7 @@ void Pet::play(int points)
     happiness.setHappiness(happiness.getHappiness() + points);
     if(happiness.getHappiness() >= 100)
         happiness.setHappiness(100);
+    emit chHapSgn(happiness.getHappiness());
 }
 
 void Pet::setFactor(int factor)
@@ -209,11 +285,12 @@ void Pet::execution()
 {
     action(Nothing);
     ptimer->stop();
+ //   m_player->stop();
 }
 
-void Pet::setPlayer(QString name)
+void Pet::setPlayer(QString m_name)
 {
-    player = name;
+    player = m_name;
     if(settings->value(player + "/health").toInt() <= 0){
         newGame(player);
         return;
@@ -225,12 +302,28 @@ void Pet::setPlayer(QString name)
         happiness.setHappiness(settings->value("happiness").toInt());
         satiety.setSatiety(settings->value("satiety").toInt());
         energy.setEnergyLevel(settings->value("energy").toInt());
+        who = settings->value("who").toInt();
+        emit count_ref(settings->value("count_ref").toInt());
     settings->endGroup();
+    setPet(who);
+    if(who != 0)
+    {
+        m_playlist->addMedia(QUrl("qrc:/pets/" + name + "/audio/" + name + ".mp3"));
+        m_playlist->addMedia(QUrl("qrc:/pets/" + name + "/audio/" + name + "_feed.mp3"));
+        if(who == 4)
+            m_playlist->addMedia(QUrl("qrc:/pets/dragon/audio/dragon_swim.mp3"));
+        else
+            m_playlist->addMedia(QUrl("qrc:/pets/coco/audio/swim.mp3"));
+        m_playlist->setPlaybackMode(QMediaPlaylist::CurrentItemOnce);
+        m_player->setPlaylist(m_playlist);
+    }
+
     emit chHealthSgn(health.getHealthLevel());
     emit chHapSgn(happiness.getHappiness());
     emit chEnSgn(energy.getEnergyLevel());
     emit chSatSgn(satiety.getSatiety());
     emit ageChange(settings->value(player + "/minutes").toULongLong() + minutes);
+    action(Nothing);
 }
 
 void Pet::lifeTime()
@@ -274,6 +367,7 @@ void Pet::newGame(QString name)
     settings->setValue("energy", 100);
     energy.setEnergyLevel(100);
     settings->setValue("minutes", 0);
+    settings->setValue("who", 0);
     settings->endGroup();
     settings->sync();
 
@@ -283,6 +377,29 @@ void Pet::newGame(QString name)
     emit chEnSgn(energy.getEnergyLevel());
     emit chSatSgn(satiety.getSatiety());
     emit ageChange(settings->value(player + "/minutes").toULongLong() + minutes);
+}
+
+void Pet::setConnects()
+{
+    connect(&health, SIGNAL(changeLevel(int)), this, SLOT(chHealthSlt(int)));
+    connect(&happiness, SIGNAL(changeLevel(int)), this, SLOT(chHapSlt(int)));
+    connect(&satiety, SIGNAL(changeLevel(int)), this, SLOT(chSatSlt(int)));
+    connect(&energy, SIGNAL(changeLevel(int)), this, SLOT(chEnSlt(int)));
+
+
+    connect(&satiety,SIGNAL(satietyNow(float)),&health,SLOT(upSpeed(float)));
+    connect(&happiness, SIGNAL(factorPoints(int)), this, SLOT(setFactor(int)));
+
+    connect(this, SIGNAL(wakeupSgn(int)),&energy, SLOT(reductionEnergy()));
+    connect(this, SIGNAL(wakeupSgn(int)),&satiety, SLOT(changeSpeed(int)));
+    connect(this, SIGNAL(wakeupSgn(int)),&happiness, SLOT(changeSpeed(int)));
+
+    connect(this, SIGNAL(sleepSgn(int)),&energy, SLOT(recoveryEnergy()));
+    connect(this, SIGNAL(sleepSgn(int)), &satiety, SLOT(changeSpeed(int)));
+    connect(this, SIGNAL(sleepSgn(int)), &happiness, SLOT(changeSpeed(int)));
+
+    connect(lifeTimer, SIGNAL(timeout()), this, SLOT(lifeTime()));
+    lifeTimer->start(60000);
 }
 
 

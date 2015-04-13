@@ -5,7 +5,7 @@ Happiness::Happiness(QObject *parent) :
     QObject(parent)
 {
     happinessLevel = 100;
-    speedHappiness = 10000;
+    speedHappiness = 60000;
     ptimer = new QTimer();
     connect(ptimer,SIGNAL(timeout()),this, SLOT(reductionHappiness()));
     ptimer->start(speedHappiness);
