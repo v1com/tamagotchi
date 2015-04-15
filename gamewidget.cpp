@@ -108,7 +108,7 @@ void GameWidget::toCure()
 void GameWidget::toWakeUp()
 {
     m_pet->wakeup();
-    m_timer->start(60000);
+    m_timer->start(1800000);
 }
 
 void GameWidget::toPlay(int happynessPoint)

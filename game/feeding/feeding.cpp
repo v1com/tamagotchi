@@ -41,7 +41,6 @@ Feeding::Feeding(QWidget *parent)
 Feeding::~Feeding()
 {
     delete basket;
-    emit addHappy(-5);
 }
 
 void Feeding::spawn()

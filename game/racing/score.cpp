@@ -15,8 +15,8 @@ Score::Score(QGraphicsTextItem *parent):QGraphicsTextItem(parent)
 void Score::increase()
 {
     score++;
-    if( (score >= 1) && (score % 10 == 0) ){
-        emit rc->addHappy(20);
+    if( (score >= 1) && (score % 30 == 0) ){
+        emit rc->addHappy(15);
     }
     setPlainText(QString("Score: ") + QString::number(score));
 }
