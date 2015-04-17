@@ -5,7 +5,7 @@ Satiety::Satiety(QObject *parent) :
     QObject(parent)
 {
     satietyLevel = 100;
-    speedSatiety = 60000;
+    speedSatiety = 108000;
     ptimer = new QTimer();
     connect(ptimer,SIGNAL(timeout()),this, SLOT(reductionSatiety()));
     ptimer->start(speedSatiety);
@@ -19,7 +19,10 @@ Satiety::~Satiety()
 
 void Satiety::setSatiety(int level)
 {
+    if(level <= 0) level = 0;
+    if(level >= 100) level = 100;
     satietyLevel = level;
+    emit changeLevel(satietyLevel);
 }
 
 int Satiety::getSatiety()

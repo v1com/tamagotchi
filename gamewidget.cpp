@@ -17,6 +17,7 @@ m_scene(new QGraphicsScene(this)), m_view(new QGraphicsView(m_scene, this)){
 
 
     count_ref = 0;
+    ref = false;
     QGridLayout *layout = new QGridLayout(NULL);
     m_timer = new QTimer(this);
 
@@ -108,7 +109,7 @@ void GameWidget::toCure()
 void GameWidget::toWakeUp()
 {
     m_pet->wakeup();
-    m_timer->start(60000);
+    m_timer->start(1800000);
 }
 
 void GameWidget::toPlay(int happynessPoint)
@@ -133,12 +134,19 @@ void GameWidget::setRefuse()
     proxy->setPos(x,y);
 
     m_pet->refuseExists();
+    if(!ref)
+        emit sendMes("Ugh, there is dirty! It would not hurt to clean.");
 }
 
 void GameWidget::setRefuses(int count)
 {
+    ref = true;
     for(int i = 0; i < count; i++)
+    {
         setRefuse();
+        if(i+1 >= count) emit sendMes("Ugh, there is dirty! It would not hurt to clean.");
+    }
+    ref = false;
 }
 
 void GameWidget::destroyRefuse(Refuse *ref)

@@ -1,17 +1,19 @@
 #ifndef SCREENCONTROLLER_H
 #define SCREENCONTROLLER_H
 
+#include <QMainWindow>
 #include <QWidget>
 #include <QGridLayout>
+#include <QSystemTrayIcon>
 #include "gamescreen.h"
 #include "authorization.h"
 #include "gameover.h"
 
-class ScreenController : public QWidget
+class ScreenController : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit ScreenController(QWidget *parent = 0);
+    explicit ScreenController(QMainWindow *parent = 0);
     QString currentPlayer;
 
 signals:
@@ -24,11 +26,23 @@ public slots:
     void onNewGame();
     void onGameOver();
     void onMain();
+
+    void changeEvent(QEvent*);
+    void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
+    void trayActionExecute();
+    void setTrayIconActions();
+    void showTrayIcon();
+    void showMessage(QString);
 protected:
     GameScreen *gs;
     Authorization * au;
     GameOver *go;
     QGridLayout *layout;
+    QMenu *trayIconMenu;
+    QAction *minimizeAction;
+    QAction *restoreAction;
+    QAction *quitAction;
+    QSystemTrayIcon *trayIcon;
 
 };
 

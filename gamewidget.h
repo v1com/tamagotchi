@@ -17,6 +17,7 @@ class GameWidget : public QWidget
     QTimer *m_timer;
     int count_ref;
     QSettings * settings;
+    bool ref;
 public:
     explicit GameWidget(QWidget *parent = 0);
     Pet *getPet();
@@ -27,6 +28,7 @@ signals:
     void chHapSgn(int);
     void chSatSgn(int);
     void chEnSgn(int);
+    void sendMes(QString);
 public slots:
     void chHealthSlt(int);
     void chHapSlt(int);

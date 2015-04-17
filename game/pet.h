@@ -36,6 +36,7 @@ class Pet : public QWidget
     int who; // 0 - egg, 1 - coco, 2 - raccoon, 3 - unicorn, 4 - dragon
     int count;
     int stage_egg; // from 1 to 4
+    bool isSleep;
 public:
     explicit Pet(QWidget *parent = 0);
     ~Pet();
@@ -61,6 +62,7 @@ signals:
     void death();
     void birth();
     void count_ref(int);
+    void need(QString);
 public slots:
     void chHealthSlt(int);
     void chHapSlt(int);

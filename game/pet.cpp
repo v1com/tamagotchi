@@ -7,6 +7,7 @@
 #include <QSettings>
 #include <QDebug>
 #include <QTime>
+#include <QMessageBox>
 
 Pet::Pet(QWidget *parent) :
     QWidget(parent), m_animation(new QMovie(this)), m_label(new QLabel(this)),
@@ -17,6 +18,7 @@ Pet::Pet(QWidget *parent) :
     count = 0;
     stage_egg = 1;
     factorPoints = 1;
+    isSleep = false;
 
     minutes = 0;
     lifeTimer = new QTimer(this);
@@ -37,6 +39,7 @@ Pet::Pet(QWidget *parent) :
 Pet::~Pet()
 {
     settings->setValue(player + "/minutes", minutes + settings->value(player + "/minutes").toInt());
+    settings->setValue(player + "/last",QDateTime::currentDateTime());
     settings->sync();
     qDebug() << settings->value(player + "/minutes");
     qDebug() << settings->value(player + "/health");
@@ -203,6 +206,12 @@ void Pet::chHealthSlt(int health)
     settings->sync();
     if(health <= 0)
         emit death();
+    if(health <= 30)
+    {
+        emit need("I think I got sick... Achoo!");
+        m_player->playlist()->setCurrentIndex(0);
+        m_player->play();
+    }
 }
 
 void Pet::chEnSlt(int energy)
@@ -210,6 +219,12 @@ void Pet::chEnSlt(int energy)
     emit chEnSgn(energy);
     settings->setValue(player + "/energy", energy);
     settings->sync();
+    if(energy <= 30 && !isSleep)
+    {
+        emit need("I'm tired... I want to sleep.");
+        m_player->playlist()->setCurrentIndex(0);
+        m_player->play();
+    }
 }
 
 void Pet::chHapSlt(int happiness)
@@ -217,6 +232,12 @@ void Pet::chHapSlt(int happiness)
     emit chHapSgn(happiness);
     settings->setValue(player + "/happiness", happiness);
     settings->sync();
+    if(happiness <= 30)
+    {
+        emit need("Let's play! I'm bored :(");
+        m_player->playlist()->setCurrentIndex(0);
+        m_player->play();
+    }
 }
 
 void Pet::chSatSlt(int satiety)
@@ -224,6 +245,12 @@ void Pet::chSatSlt(int satiety)
     emit chSatSgn(satiety);
     settings->setValue(player + "/satiety", satiety);
     settings->sync();
+    if(satiety <= 30)
+    {
+        emit need("I'm hungry! Feed me :(");
+        m_player->playlist()->setCurrentIndex(0);
+        m_player->play();
+    }
 }
 
 void Pet::feed(int points)
@@ -238,24 +265,39 @@ void Pet::feed(int points)
 
 void Pet::cure()
 {
-    health.setHealthLevel(100);
-    happiness.setHappiness(happiness.getHappiness() - 20);
-    if(happiness.getHappiness() <= 0)
-        happiness.setHappiness(0);
-    emit chHealthSgn(health.getHealthLevel());
-    emit chHapSgn(happiness.getHappiness());
-    action(Curing);
+    QDateTime now = QDateTime::currentDateTime();
+    int dif = settings->value(player + "/lastCure").toDateTime().secsTo(now)/3600;
+    if(dif < 24)
+    {
+        QMessageBox::information(0, "You can't perform this action now",
+                                 "Sorry, but you can use a syringe only once in 24 hours. " + QString::number(24 - dif)
+                                 + " hours left before the next use.");
+        return;
+    }
+    else
+    {
+        settings->setValue(player + "/lastCure", now);
+        health.setHealthLevel(100);
+        happiness.setHappiness(happiness.getHappiness() - 20);
+        if(happiness.getHappiness() <= 0)
+            happiness.setHappiness(0);
+        emit chHealthSgn(health.getHealthLevel());
+        emit chHapSgn(happiness.getHappiness());
+        action(Curing);
+    }
 }
 
 void Pet::sleep()
 {
-    emit sleepSgn(10);
+    emit sleepSgn(5);
+    isSleep = true;
     action(Sleeping);
 }
 
 void Pet::wakeup()
 {
     emit wakeupSgn(1);
+    isSleep = false;
     action(Nothing);
 }
 
@@ -291,20 +333,30 @@ void Pet::execution()
 void Pet::setPlayer(QString m_name)
 {
     player = m_name;
+    QDateTime last;
+    int dif = 0, sat = 0, hap = 0, en = 0, he = 0;
+    QDateTime now = QDateTime::currentDateTime();
     if(settings->value(player + "/health").toInt() <= 0){
         newGame(player);
         return;
     }
     settings->beginGroup(player);
         life = settings->value("birth").toDateTime();
-        health.setHealthLevel(settings->value("health").toInt());
+        he = settings->value("health").toInt();
         qDebug() << life;
-        happiness.setHappiness(settings->value("happiness").toInt());
-        satiety.setSatiety(settings->value("satiety").toInt());
-        energy.setEnergyLevel(settings->value("energy").toInt());
+        hap = settings->value("happiness").toInt();
+        sat = settings->value("satiety").toInt();
+        en = settings->value("energy").toInt();
         who = settings->value("who").toInt();
-        emit count_ref(settings->value("count_ref").toInt());
+        last = settings->value("last").toDateTime();
+        dif = last.secsTo(now);
+        emit count_ref(settings->value("count_ref").toInt() + dif/10800);
     settings->endGroup();
+    satiety.setSatiety(sat - dif/540);
+    happiness.setHappiness(hap - dif/540);
+    energy.setEnergyLevel(en - dif/540);
+    health.setHealthLevel(he - dif/600);
+
     setPet(who);
     if(who != 0)
     {
@@ -318,6 +370,7 @@ void Pet::setPlayer(QString m_name)
         m_player->setPlaylist(m_playlist);
     }
 
+    minutes += dif/60;
     emit chHealthSgn(health.getHealthLevel());
     emit chHapSgn(happiness.getHappiness());
     emit chEnSgn(energy.getEnergyLevel());
@@ -353,9 +406,10 @@ void Pet::newGame(QString name)
     qDebug() << "new game";
     qDebug() << settings->fileName();
     player = name;
+    QDateTime now = QDateTime::currentDateTime();
     settings->beginGroup(player);
 
-    settings->setValue("birth", QDateTime::currentDateTime());
+    settings->setValue("birth", now);
     life = settings->value("birth").toDateTime();
 
     settings->setValue("health", 100);
@@ -368,6 +422,7 @@ void Pet::newGame(QString name)
     energy.setEnergyLevel(100);
     settings->setValue("minutes", 0);
     settings->setValue("who", 0);
+    settings->setValue("lastCure", now.addSecs(-90000));
     settings->endGroup();
     settings->sync();
 

@@ -31,6 +31,9 @@ GameScreen::GameScreen(QWidget *parent) :
     connect(ui->widget->getPet(), SIGNAL(death()), this, SLOT(gameOver()));
     connect(ui->toMainBtn, SIGNAL(clicked()), this, SLOT(mainWindow()));
 
+    connect(ui->widget->getPet(), SIGNAL(need(QString)), this, SLOT(petNeeds(QString)));
+    connect(ui->widget, SIGNAL(sendMes(QString)), this, SLOT(petNeeds(QString)));
+
     MenuForGames * miniGameMenu = new MenuForGames(NULL);
     connect(btn,SIGNAL(clicked()),miniGameMenu,SLOT(show()));
     connect(miniGameMenu,SIGNAL(addHappy(int)),ui->widget,SLOT(toPlay(int)));
@@ -54,10 +57,10 @@ void GameScreen::receivePlayer(QString name)
     ui->birthLbl->update();
 }
 
-void GameScreen::setAge(qlonglong age)
+void GameScreen::setAge(qlonglong s)
 {
-    QString s = QString::number(age);
-    ui->ageLbl->setText(s + " minutes");
+    ui->ageLbl->setText(QString::number(s/1440) + " days " + QString::number(s/60) +
+                        " hours " + QString::number(s - s/60 * 60) + " minutes");
     ui->ageLbl->update();
 }
 
@@ -75,4 +78,9 @@ void GameScreen::gameOver()
 void GameScreen::mainWindow()
 {
     emit toMainWindow();
+}
+
+void GameScreen::petNeeds(QString words)
+{
+    emit petSaid(words);
 }

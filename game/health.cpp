@@ -6,7 +6,7 @@ Health::Health(QObject *parent) :
     QObject(parent)
 {
     healthLevel = 100;
-    speedDecrease = 360000;
+    speedDecrease = 600000;
     ptimer = new QTimer(this);
     connect(ptimer,SIGNAL(timeout()),SLOT(reductionHealth()));
     ptimer->start(speedDecrease);
@@ -19,7 +19,10 @@ Health::~Health()
 
 void Health::setHealthLevel(int level)
 {
+    if(level <= 0) level = 0;
+    if(level >= 100) level = 100;
     healthLevel = level;
+    emit changeLevel(healthLevel);
 }
 
 int Health::getHealthLevel()

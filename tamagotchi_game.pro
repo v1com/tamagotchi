@@ -58,3 +58,5 @@ RESOURCES += \
     resources/rsc.qrc
 
 OTHER_FILES +=
+
+RC_FILE = myapp.rc

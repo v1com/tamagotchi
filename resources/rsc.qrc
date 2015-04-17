@@ -23,6 +23,7 @@
     </qresource>
     <qresource prefix="/backgrounds">
         <file>go.jpg</file>
+        <file>egg.png</file>
     </qresource>
     <qresource prefix="/feeding">
         <file>apple22.png</file>

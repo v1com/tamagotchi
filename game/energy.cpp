@@ -6,7 +6,7 @@ Energy::Energy(QObject *parent) :
     QObject(parent)
 {
     energyLevel = 100;
-    speedEnergy = 60000;
+    speedEnergy = 108000;
     ptimer = new QTimer();
     connect(ptimer,SIGNAL(timeout()),this, SLOT(reductionEnergy()));
     ptimer->start(speedEnergy);
@@ -27,7 +27,10 @@ int Energy::getEnergyLevel()
 
 void Energy::setEnergyLevel(int points)
 {
+    if(points <= 0) points = 0;
+    if(points >= 100) points = 100;
     energyLevel = points;
+    emit changeLevel(energyLevel);
 }
 
 void Energy::reductionEnergy()

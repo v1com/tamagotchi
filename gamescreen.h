@@ -19,14 +19,16 @@ signals:
     void sendPlayer(QString);
     void toGameOver();
     void toMainWindow();
+    void petSaid(QString);
 public slots:
   //  void newRacing();
    // void deleteRacing();
     void receivePlayer(QString);
-    void setAge(qlonglong);
+    void setAge(qlonglong s);
     void newGame(QString);
     void gameOver();
     void mainWindow();
+    void petNeeds(QString);
 private:
     Ui::GameScreen *ui;
 };
