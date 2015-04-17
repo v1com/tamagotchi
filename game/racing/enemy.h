@@ -9,8 +9,9 @@
 class Enemy : public QObject,public QGraphicsPixmapItem
 {
     Q_OBJECT
+    float _speed;
 public:
-    Enemy(QObject * parent = 0);
+    Enemy(float speed,QObject * parent = 0);
     int getPositionX();
 signals:
     void gameOver();

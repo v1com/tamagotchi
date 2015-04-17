@@ -2,6 +2,7 @@
 
 Racing::Racing(QWidget * parent):QGraphicsView(parent)
 {
+    speedRacing=1;
     setFocusPolicy(Qt::NoFocus);
     //add scene
     scene = new Track();
@@ -20,6 +21,8 @@ Racing::Racing(QWidget * parent):QGraphicsView(parent)
     player->setFocus();
     QTimer * spawnTimer = new QTimer(this);
     QObject::connect(spawnTimer,SIGNAL(timeout()),this,SLOT(spawn()));
+    QObject::connect(spawnTimer,SIGNAL(timeout()),this,SLOT(incSpeed()));
+
     spawnTimer->start(1500);
 
     //add score
@@ -35,7 +38,7 @@ Racing::~Racing()
 {
     delete score;
     delete player;
-    emit addHappy(-5);
+    speedRacing = 1;
 }
 
 void Racing::keyPressEvent(QKeyEvent *event)
@@ -51,11 +54,16 @@ void Racing::keyPressEvent(QKeyEvent *event)
 }
 
 void Racing::spawn(){
-    Enemy * enemy = new Enemy(this);
+    Enemy * enemy = new Enemy(speedRacing,this);
     scene->addItem(enemy);
-    Enemy * enemy1 = new Enemy(this);
+    Enemy * enemy1 = new Enemy(speedRacing,this);
 
     if( enemy -> getPositionX() != enemy1->getPositionX())
         scene->addItem(enemy1);
     else delete enemy1;
+}
+
+void Racing::incSpeed()
+{
+    speedRacing+=0.05;
 }

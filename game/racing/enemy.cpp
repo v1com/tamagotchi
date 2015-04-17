@@ -2,22 +2,25 @@
 #include <QTimer>
 #include <QGraphicsScene>
 #include <stdlib.h>
+#include <time.h>
+
 #include <QDebug>
 #include <typeinfo>
 #include "racing.h"
-#include <time.h>
+
 
 extern Racing * rc;
 
-Enemy::Enemy(QObject * parent) :QObject(parent),QGraphicsPixmapItem()
+Enemy::Enemy(float speed,QObject * parent) :QObject(parent),QGraphicsPixmapItem()
 {
-    int posEnemy[3];
+    _speed=speed;
 
+    int posEnemy[3];
     posEnemy[0]=17;
     posEnemy[1]=121;
     posEnemy[2]=225;
 
-    srand(time(NULL));
+    //srand(time(NULL));
 
     int random_number = posEnemy[rand() % 3];
 
@@ -28,7 +31,8 @@ Enemy::Enemy(QObject * parent) :QObject(parent),QGraphicsPixmapItem()
     QTimer * timer = new QTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(move()));
 
-    timer->start(10);
+    timer->start(10);    
+
 }
 
 int Enemy::getPositionX()
@@ -49,7 +53,7 @@ void Enemy::move()
         }
     }
 
-    setPos(x(),y()+2);
+    setPos(x(),y()+2*_speed);
     if(pos().y() > 410){
         scene()->removeItem(this);
         delete this;

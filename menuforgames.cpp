@@ -3,6 +3,8 @@
 #include "game/racing/racing.h"
 #include "game/feeding/feeding.h"
 #include <QVBoxLayout>
+#include <stdlib.h>
+#include <time.h>
 
 Racing * rc;
 Feeding * fd;
@@ -10,6 +12,7 @@ Feeding * fd;
 MenuForGames::MenuForGames(QWidget *parent) :
     QWidget(parent)
 {
+    srand(time(NULL));
     QVBoxLayout * myLayout = new QVBoxLayout(this);
     myLayout->setMargin(0);
     setLayout(myLayout);

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
+<<<<<<< HEAD
 <!-- Written by QtCreator 3.2.1, 2015-04-17T21:33:25. -->
+=======
+<!-- Written by QtCreator 3.2.1, 2015-04-15T01:46:17. -->
+>>>>>>> ad121c6a14e3ce1335262e2931511d7ee53ed1fe
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -241,6 +245,7 @@
   </valuemap>
  </data>
  <data>
+<<<<<<< HEAD
   <variable>ProjectExplorer.Project.Target.1</variable>
   <valuemap type="QVariantMap">
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop Qt 5.3 MSVC2010 OpenGL 32bit</value>
@@ -425,8 +430,10 @@
   </valuemap>
  </data>
  <data>
+=======
+>>>>>>> ad121c6a14e3ce1335262e2931511d7ee53ed1fe
   <variable>ProjectExplorer.Project.TargetCount</variable>
-  <value type="int">2</value>
+  <value type="int">1</value>
  </data>
  <data>
   <variable>ProjectExplorer.Project.Updater.FileVersion</variable>

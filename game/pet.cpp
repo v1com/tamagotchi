@@ -7,7 +7,12 @@
 #include <QSettings>
 #include <QDebug>
 #include <QTime>
+<<<<<<< HEAD
 #include <QMessageBox>
+=======
+#include <stdlib.h>
+#include <time.h>
+>>>>>>> ad121c6a14e3ce1335262e2931511d7ee53ed1fe
 
 Pet::Pet(QWidget *parent) :
     QWidget(parent), m_animation(new QMovie(this)), m_label(new QLabel(this)),
@@ -16,7 +21,7 @@ Pet::Pet(QWidget *parent) :
 
     settings = new QSettings("gameSettings");
     count = 0;
-    stage_egg = 1;
+    stage_egg = 5;
     factorPoints = 1;
     isSleep = false;
 
@@ -32,6 +37,7 @@ Pet::Pet(QWidget *parent) :
 
     resize(100,100);
     m_animation->setScaledSize(size());
+
 
     setPet(0);
 }
@@ -172,9 +178,10 @@ void Pet::mousePressEvent(QMouseEvent *e)
             stage_egg++;
         }
         if(stage_egg > 4){
-            QTime midnight(0,0,0);
-            qsrand(midnight.secsTo(QTime::currentTime()));
-            who = qrand() % 4 + 1;
+           // QTime midnight(0,0,0);
+            //qsrand(midnight.secsTo(QTime::currentTime()));
+            srand(time(NULL));
+            who = 3;// rand() % 4 + 1;
             settings->setValue(player + "/who", who);
           //  setConnects();
             setPet(who);

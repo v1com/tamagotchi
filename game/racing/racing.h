@@ -15,6 +15,7 @@ class Racing : public QGraphicsView
     Q_OBJECT
     Player * player;
     Track * scene;
+    float speedRacing;
 public:
     Racing(QWidget *parent = 0);
     ~Racing();
@@ -24,6 +25,7 @@ signals:
     void addHappy(int);
 public slots:
     void spawn();
+    void incSpeed();
 };
 
 #endif // RACING_H
