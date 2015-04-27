@@ -59,8 +59,4 @@ RESOURCES += \
 
 OTHER_FILES +=
 
-<<<<<<< HEAD
 RC_FILE = myapp.rc
-=======
-RC_FILE = myapp1.rc
->>>>>>> ad121c6a14e3ce1335262e2931511d7ee53ed1fe

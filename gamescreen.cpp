@@ -38,6 +38,20 @@ GameScreen::GameScreen(QWidget *parent) :
     connect(btn,SIGNAL(clicked()),miniGameMenu,SLOT(show()));
     connect(miniGameMenu,SIGNAL(addHappy(int)),ui->widget,SLOT(toPlay(int)));
 
+    connect(ui->widget->getPet(), SIGNAL(sleepSgn(int)), ui->toCure, SLOT(hide()));
+    connect(ui->widget->getPet(), SIGNAL(sleepSgn(int)), ui->toFeed, SLOT(hide()));
+    connect(ui->widget->getPet(), SIGNAL(sleepSgn(int)), ui->toWash, SLOT(hide()));
+    connect(ui->widget->getPet(), SIGNAL(sleepSgn(int)), btn, SLOT(hide()));
+    connect(ui->widget->getPet(), SIGNAL(sleepSgn(int)), ui->toSleep, SLOT(hide()));
+    connect(ui->widget->getPet(), SIGNAL(sleepSgn(int)), ui->toWakeUp, SLOT(show()));
+
+    connect(ui->widget->getPet(), SIGNAL(wakeupSgn(int)), ui->toCure, SLOT(show()));
+    connect(ui->widget->getPet(), SIGNAL(wakeupSgn(int)), ui->toFeed, SLOT(show()));
+    connect(ui->widget->getPet(), SIGNAL(wakeupSgn(int)), ui->toWash, SLOT(show()));
+    connect(ui->widget->getPet(), SIGNAL(wakeupSgn(int)), btn, SLOT(show()));
+    connect(ui->widget->getPet(), SIGNAL(wakeupSgn(int)), ui->toWakeUp, SLOT(hide()));
+    connect(ui->widget->getPet(), SIGNAL(wakeupSgn(int)), ui->toSleep, SLOT(show()));
+
  /*   QPixmap pix;
     pix.load("H:\\img.jpg");
     QPalette pal;

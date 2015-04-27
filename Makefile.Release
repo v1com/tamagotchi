@@ -169,7 +169,7 @@ release/myapp_res.o: myapp.rc
 	windres -i myapp.rc -o release\myapp_res.o --include-dir=. $(DEFINES)
 
 qmake: FORCE
-	@$(QMAKE) -spec win32-g++ -o Makefile.Release tamagotchi_game.pro
+	@$(QMAKE) -spec win32-g++ CONFIG+=debug -o Makefile.Release tamagotchi_game.pro
 
 qmake_all: FORCE
 
@@ -253,6 +253,7 @@ release/qrc_rsc.cpp: resources/rsc.qrc \
 		resources/Enemy.png \
 		resources/trackbackground2.png \
 		resources/MyCar.png \
+		resources/egg.png \
 		resources/go.jpg
 	C:\Qt\5.3\mingw482_32\bin\rcc.exe -name rsc resources\rsc.qrc -o release\qrc_rsc.cpp
 
@@ -1483,7 +1484,8 @@ release/moc_authorization.cpp: C:/Qt/5.3/mingw482_32/include/QtWidgets/QWidget \
 		authorization.h
 	C:\Qt\5.3\mingw482_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -IC:/Qt/5.3/mingw482_32/mkspecs/win32-g++ -I"C:/Qt/Tools/QtCreator/bin/tamagotchi_game _v1.0/tamagotchi" -IC:/Qt/5.3/mingw482_32/include -IC:/Qt/5.3/mingw482_32/include/QtMultimedia -IC:/Qt/5.3/mingw482_32/include/QtWidgets -IC:/Qt/5.3/mingw482_32/include/QtNetwork -IC:/Qt/5.3/mingw482_32/include/QtGui -IC:/Qt/5.3/mingw482_32/include/QtCore authorization.h -o release\moc_authorization.cpp
 
-release/moc_screencontroller.cpp: C:/Qt/5.3/mingw482_32/include/QtWidgets/QWidget \
+release/moc_screencontroller.cpp: C:/Qt/5.3/mingw482_32/include/QtWidgets/QMainWindow \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/qmainwindow.h \
 		C:/Qt/5.3/mingw482_32/include/QtWidgets/qwidget.h \
 		C:/Qt/5.3/mingw482_32/include/QtGui/qwindowdefs.h \
 		C:/Qt/5.3/mingw482_32/include/QtCore/qglobal.h \
@@ -1583,11 +1585,16 @@ release/moc_screencontroller.cpp: C:/Qt/5.3/mingw482_32/include/QtWidgets/QWidge
 		C:/Qt/5.3/mingw482_32/include/QtCore/qfiledevice.h \
 		C:/Qt/5.3/mingw482_32/include/QtGui/qvector2d.h \
 		C:/Qt/5.3/mingw482_32/include/QtGui/qtouchdevice.h \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/qtabwidget.h \
+		C:/Qt/5.3/mingw482_32/include/QtGui/qicon.h \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/QWidget \
 		C:/Qt/5.3/mingw482_32/include/QtWidgets/QGridLayout \
 		C:/Qt/5.3/mingw482_32/include/QtWidgets/qgridlayout.h \
 		C:/Qt/5.3/mingw482_32/include/QtWidgets/qlayout.h \
 		C:/Qt/5.3/mingw482_32/include/QtWidgets/qlayoutitem.h \
 		C:/Qt/5.3/mingw482_32/include/QtWidgets/qboxlayout.h \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/QSystemTrayIcon \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/qsystemtrayicon.h \
 		gamescreen.h \
 		game/pet.h \
 		C:/Qt/5.3/mingw482_32/include/QtCore/QTimer \
@@ -2846,11 +2853,17 @@ release/main.o: main.cpp C:/Qt/5.3/mingw482_32/include/QtWidgets/QApplication \
 		C:/Qt/5.3/mingw482_32/include/QtCore/QDebug \
 		C:/Qt/5.3/mingw482_32/include/QtWidgets/QWidget \
 		screencontroller.h \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/QMainWindow \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/qmainwindow.h \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/qtabwidget.h \
+		C:/Qt/5.3/mingw482_32/include/QtGui/qicon.h \
 		C:/Qt/5.3/mingw482_32/include/QtWidgets/QGridLayout \
 		C:/Qt/5.3/mingw482_32/include/QtWidgets/qgridlayout.h \
 		C:/Qt/5.3/mingw482_32/include/QtWidgets/qlayout.h \
 		C:/Qt/5.3/mingw482_32/include/QtWidgets/qlayoutitem.h \
 		C:/Qt/5.3/mingw482_32/include/QtWidgets/qboxlayout.h \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/QSystemTrayIcon \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/qsystemtrayicon.h \
 		gamescreen.h \
 		game/pet.h \
 		C:/Qt/5.3/mingw482_32/include/QtCore/QTimer \
@@ -3222,7 +3235,10 @@ release/pet.o: game/pet.cpp game/pet.h \
 		C:/Qt/5.3/mingw482_32/include/QtWidgets/qframe.h \
 		C:/Qt/5.3/mingw482_32/include/QtCore/QTimerEvent \
 		C:/Qt/5.3/mingw482_32/include/QtCore/QDebug \
-		C:/Qt/5.3/mingw482_32/include/QtCore/QTime
+		C:/Qt/5.3/mingw482_32/include/QtCore/QTime \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/QMessageBox \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/qmessagebox.h \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/qdialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\pet.o game\pet.cpp
 
 release/health.o: game/health.cpp game/health.h \
@@ -4369,7 +4385,8 @@ release/authorization.o: authorization.cpp authorization.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\authorization.o authorization.cpp
 
 release/screencontroller.o: screencontroller.cpp screencontroller.h \
-		C:/Qt/5.3/mingw482_32/include/QtWidgets/QWidget \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/QMainWindow \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/qmainwindow.h \
 		C:/Qt/5.3/mingw482_32/include/QtWidgets/qwidget.h \
 		C:/Qt/5.3/mingw482_32/include/QtGui/qwindowdefs.h \
 		C:/Qt/5.3/mingw482_32/include/QtCore/qglobal.h \
@@ -4469,11 +4486,16 @@ release/screencontroller.o: screencontroller.cpp screencontroller.h \
 		C:/Qt/5.3/mingw482_32/include/QtCore/qfiledevice.h \
 		C:/Qt/5.3/mingw482_32/include/QtGui/qvector2d.h \
 		C:/Qt/5.3/mingw482_32/include/QtGui/qtouchdevice.h \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/qtabwidget.h \
+		C:/Qt/5.3/mingw482_32/include/QtGui/qicon.h \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/QWidget \
 		C:/Qt/5.3/mingw482_32/include/QtWidgets/QGridLayout \
 		C:/Qt/5.3/mingw482_32/include/QtWidgets/qgridlayout.h \
 		C:/Qt/5.3/mingw482_32/include/QtWidgets/qlayout.h \
 		C:/Qt/5.3/mingw482_32/include/QtWidgets/qlayoutitem.h \
 		C:/Qt/5.3/mingw482_32/include/QtWidgets/qboxlayout.h \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/QSystemTrayIcon \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/qsystemtrayicon.h \
 		gamescreen.h \
 		game/pet.h \
 		C:/Qt/5.3/mingw482_32/include/QtCore/QTimer \
@@ -4508,7 +4530,15 @@ release/screencontroller.o: screencontroller.cpp screencontroller.h \
 		C:/Qt/5.3/mingw482_32/include/QtMultimedia/qmediabindableinterface.h \
 		authorization.h \
 		gameover.h \
-		C:/Qt/5.3/mingw482_32/include/QtCore/QDebug
+		C:/Qt/5.3/mingw482_32/include/QtCore/QDebug \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/QMessageBox \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/qmessagebox.h \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/qdialog.h \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/QMenu \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/qmenu.h \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/qaction.h \
+		C:/Qt/5.3/mingw482_32/include/QtWidgets/qactiongroup.h \
+		C:/Qt/5.3/mingw482_32/include/QtCore/QEvent
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\screencontroller.o screencontroller.cpp
 
 release/gamescreen.o: gamescreen.cpp gamescreen.h \

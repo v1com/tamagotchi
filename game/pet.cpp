@@ -7,12 +7,9 @@
 #include <QSettings>
 #include <QDebug>
 #include <QTime>
-<<<<<<< HEAD
 #include <QMessageBox>
-=======
 #include <stdlib.h>
 #include <time.h>
->>>>>>> ad121c6a14e3ce1335262e2931511d7ee53ed1fe
 
 Pet::Pet(QWidget *parent) :
     QWidget(parent), m_animation(new QMovie(this)), m_label(new QLabel(this)),
@@ -21,7 +18,7 @@ Pet::Pet(QWidget *parent) :
 
     settings = new QSettings("gameSettings");
     count = 0;
-    stage_egg = 5;
+    stage_egg = 1;
     factorPoints = 1;
     isSleep = false;
 
@@ -46,9 +43,16 @@ Pet::~Pet()
 {
     settings->setValue(player + "/minutes", minutes + settings->value(player + "/minutes").toInt());
     settings->setValue(player + "/last",QDateTime::currentDateTime());
+    settings->setValue(player + "/health", health.getHealthLevel());
+    settings->setValue(player + "/energy", energy.getEnergyLevel());
+    settings->setValue(player + "/happiness", happiness.getHappiness());
+    settings->setValue(player + "/satiety", satiety.getSatiety());
+
+    if(isSleep)
+        settings->setValue(player + "/isSleep", true);
+    else
+        settings->setValue(player + "/isSleep", false);
     settings->sync();
-    qDebug() << settings->value(player + "/minutes");
-    qDebug() << settings->value(player + "/health");
 }
 
 void Pet::animation(QString texturename) {
@@ -181,7 +185,7 @@ void Pet::mousePressEvent(QMouseEvent *e)
            // QTime midnight(0,0,0);
             //qsrand(midnight.secsTo(QTime::currentTime()));
             srand(time(NULL));
-            who = 3;// rand() % 4 + 1;
+            who = rand() % 4 + 1;
             settings->setValue(player + "/who", who);
           //  setConnects();
             setPet(who);
@@ -213,7 +217,7 @@ void Pet::chHealthSlt(int health)
     settings->sync();
     if(health <= 0)
         emit death();
-    if(health <= 30)
+    if(health <= 30 && health > 0)
     {
         emit need("I think I got sick... Achoo!");
         m_player->playlist()->setCurrentIndex(0);
@@ -226,7 +230,7 @@ void Pet::chEnSlt(int energy)
     emit chEnSgn(energy);
     settings->setValue(player + "/energy", energy);
     settings->sync();
-    if(energy <= 30 && !isSleep)
+    if(energy <= 30 && !isSleep && energy > 0)
     {
         emit need("I'm tired... I want to sleep.");
         m_player->playlist()->setCurrentIndex(0);
@@ -239,7 +243,7 @@ void Pet::chHapSlt(int happiness)
     emit chHapSgn(happiness);
     settings->setValue(player + "/happiness", happiness);
     settings->sync();
-    if(happiness <= 30)
+    if(happiness <= 30 && happiness > 0)
     {
         emit need("Let's play! I'm bored :(");
         m_player->playlist()->setCurrentIndex(0);
@@ -252,7 +256,7 @@ void Pet::chSatSlt(int satiety)
     emit chSatSgn(satiety);
     settings->setValue(player + "/satiety", satiety);
     settings->sync();
-    if(satiety <= 30)
+    if(satiety <= 30 && satiety > 0)
     {
         emit need("I'm hungry! Feed me :(");
         m_player->playlist()->setCurrentIndex(0);
@@ -273,7 +277,11 @@ void Pet::feed(int points)
 void Pet::cure()
 {
     QDateTime now = QDateTime::currentDateTime();
+    if(!settings->contains(player + "/lastCure"))
+        settings->setValue(player + "/lastCure", now.addSecs(-90000));
+    qDebug() << "LAST CURE: " << settings->value(player + "/lastCure");
     int dif = settings->value(player + "/lastCure").toDateTime().secsTo(now)/3600;
+    qDebug() << "DIF: " << dif;
     if(dif < 24)
     {
         QMessageBox::information(0, "You can't perform this action now",
@@ -361,8 +369,16 @@ void Pet::setPlayer(QString m_name)
     settings->endGroup();
     satiety.setSatiety(sat - dif/540);
     happiness.setHappiness(hap - dif/540);
-    energy.setEnergyLevel(en - dif/540);
+    if(settings->value(player + "/isSleep").toBool())
+        energy.setEnergyLevel(en + dif/540);
+    else
+        energy.setEnergyLevel(en - dif/540);
     health.setHealthLevel(he - dif/600);
+    if(health.getHealthLevel() <= 0)
+    {
+        emit death();
+        return;
+    }
 
     setPet(who);
     if(who != 0)
@@ -383,7 +399,11 @@ void Pet::setPlayer(QString m_name)
     emit chEnSgn(energy.getEnergyLevel());
     emit chSatSgn(satiety.getSatiety());
     emit ageChange(settings->value(player + "/minutes").toULongLong() + minutes);
-    action(Nothing);
+
+    if(settings->value(player + "/isSleep").toBool())
+        sleep();
+    else
+        action(Nothing);
 }
 
 void Pet::lifeTime()
@@ -430,6 +450,8 @@ void Pet::newGame(QString name)
     settings->setValue("minutes", 0);
     settings->setValue("who", 0);
     settings->setValue("lastCure", now.addSecs(-90000));
+    settings->setValue("isSleep", false);
+    settings->setValue("count_ref", 0);
     settings->endGroup();
     settings->sync();
 

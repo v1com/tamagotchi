@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QMenu>
 #include <QEvent>
+#include "time.h"
 
 ScreenController::ScreenController(QMainWindow *parent): QMainWindow(parent){
 
@@ -23,6 +24,17 @@ ScreenController::ScreenController(QMainWindow *parent): QMainWindow(parent){
     this -> setMinimumSize(601, 414);
     this -> setTrayIconActions();
     this -> showTrayIcon();
+
+    phrase << "Let's play!" << "I would snack...:)" << "Yesterda-a-a-a-y, all my troubles seemed so fa-a-a-r awa-a-y..." <<
+              "When you gaze long into an abyss the abyss also gazes into you." <<
+              "If you know what you want, you are more likely to get it." <<
+              "One of the greatest discoveries a man makes, one of his great surprises, is to find he can do what he was afraid he could not do." <<
+              "Success is not in what you have, but who you are." <<
+              "Being entirely honest with oneself is a good exercise." <<
+              "Every solution breeds new problems.";
+    phrase_timer = new QTimer(this);
+    connect(phrase_timer, SIGNAL(timeout()), this, SLOT(sayPhrase()));
+    phrase_timer->start(1500000);
     onAuth();
 }
 
@@ -150,5 +162,13 @@ void ScreenController::showTrayIcon()
 void ScreenController::showMessage(QString message)
 {
     trayIcon -> showMessage("I need your care!", message, QSystemTrayIcon::Information, 10000);
+    connect(trayIcon, SIGNAL(messageClicked()), this, SLOT(trayActionExecute()));
+}
+
+void ScreenController::sayPhrase()
+{
+    srand(time(NULL));
+    QString message = phrase.at(rand() % 9);
+    trayIcon -> showMessage("That's what I think", message, QSystemTrayIcon::Information, 10000);
     connect(trayIcon, SIGNAL(messageClicked()), this, SLOT(trayActionExecute()));
 }

@@ -211,7 +211,7 @@ public:
         label_5->setFont(font);
         ageLbl = new QLabel(GameScreen);
         ageLbl->setObjectName(QStringLiteral("ageLbl"));
-        ageLbl->setGeometry(QRect(80, 350, 141, 21));
+        ageLbl->setGeometry(QRect(80, 350, 321, 21));
         ageLbl->setFont(font);
         toMainBtn = new QPushButton(GameScreen);
         toMainBtn->setObjectName(QStringLiteral("toMainBtn"));
@@ -233,16 +233,6 @@ public:
         QObject::connect(widget, SIGNAL(chSatSgn(int)), satietyLvl, SLOT(setLevel(int)));
         QObject::connect(toWash, SIGNAL(clicked()), widget, SLOT(toWash()));
         QObject::connect(toWakeUp, SIGNAL(clicked()), widget, SLOT(toWakeUp()));
-        QObject::connect(toWakeUp, SIGNAL(clicked()), toWakeUp, SLOT(hide()));
-        QObject::connect(toWakeUp, SIGNAL(clicked()), toCure, SLOT(show()));
-        QObject::connect(toWakeUp, SIGNAL(clicked()), toFeed, SLOT(show()));
-        QObject::connect(toWakeUp, SIGNAL(clicked()), toSleep, SLOT(show()));
-        QObject::connect(toWakeUp, SIGNAL(clicked()), toWash, SLOT(show()));
-        QObject::connect(toSleep, SIGNAL(clicked()), toSleep, SLOT(hide()));
-        QObject::connect(toSleep, SIGNAL(clicked()), toCure, SLOT(hide()));
-        QObject::connect(toSleep, SIGNAL(clicked()), toFeed, SLOT(hide()));
-        QObject::connect(toSleep, SIGNAL(clicked()), toWakeUp, SLOT(show()));
-        QObject::connect(toSleep, SIGNAL(clicked()), toWash, SLOT(hide()));
         QObject::connect(toSleep, SIGNAL(clicked()), widget, SLOT(toSleep()));
         QObject::connect(toFeed, SIGNAL(clicked()), widget, SLOT(toFeed()));
         QObject::connect(toCure, SIGNAL(clicked()), widget, SLOT(toCure()));

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QWidget>
 #include <QGridLayout>
+#include <QTimer>
 #include <QSystemTrayIcon>
 #include "gamescreen.h"
 #include "authorization.h"
@@ -12,6 +13,8 @@
 class ScreenController : public QMainWindow
 {
     Q_OBJECT
+    QStringList phrase;
+    QTimer * phrase_timer;
 public:
     explicit ScreenController(QMainWindow *parent = 0);
     QString currentPlayer;
@@ -33,6 +36,7 @@ public slots:
     void setTrayIconActions();
     void showTrayIcon();
     void showMessage(QString);
+    void sayPhrase();
 protected:
     GameScreen *gs;
     Authorization * au;
