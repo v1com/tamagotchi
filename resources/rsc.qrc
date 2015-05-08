@@ -1,0 +1,92 @@
+<RCC>
+    <qresource prefix="/pets/coco/audio">
+        <file>swim.mp3</file>
+        <file>coco_feed.mp3</file>
+        <file>coco.mp3</file>
+    </qresource>
+    <qresource prefix="/pets/coco/gifs">
+        <file>coco_eat.gif</file>
+        <file>coco_sleep.gif</file>
+        <file>coco_swim.gif</file>
+        <file>coco1.gif</file>
+    </qresource>
+    <qresource prefix="/pets/coco/pics">
+        <file>coco_has_eaten.png</file>
+        <file>empty_nest.bmp</file>
+        <file>refuse.png</file>
+    </qresource>
+    <qresource prefix="/racing">
+        <file>Enemy.png</file>
+        <file>MyCar.png</file>
+        <file>trackbackground1.png</file>
+        <file>trackbackground2.png</file>
+    </qresource>
+    <qresource prefix="/backgrounds">
+        <file>go.jpg</file>
+        <file>egg.png</file>
+    </qresource>
+    <qresource prefix="/feeding">
+        <file>apple22.png</file>
+        <file>apple33.png</file>
+        <file>apple44.png</file>
+        <file>backgroundPark.jpg</file>
+        <file>backgroundPark.png</file>
+        <file>backgroundPark1.png</file>
+        <file>banana23.png</file>
+        <file>banana34.png</file>
+        <file>banana45.png</file>
+        <file>basket.png</file>
+        <file>cherry25.png</file>
+        <file>cherry33.png</file>
+        <file>cherry41.png</file>
+        <file>pear23.png</file>
+        <file>pear34.png</file>
+        <file>pear45.png</file>
+        <file>strawberry20.png</file>
+        <file>strawberry30.png</file>
+        <file>strawberry40.png</file>
+    </qresource>
+    <qresource prefix="/pets/egg">
+        <file>egg1.png</file>
+        <file>egg2.png</file>
+        <file>egg3.png</file>
+        <file>egg4.png</file>
+    </qresource>
+    <qresource prefix="/pets/raccoon/gifs">
+        <file>raccoon1.gif</file>
+        <file>raccoon_eat.gif</file>
+        <file>raccoon_sleep.gif</file>
+        <file>raccoon_swim.gif</file>
+    </qresource>
+    <qresource prefix="/pets/curing">
+        <file>syringe.gif</file>
+    </qresource>
+    <qresource prefix="/pets/unicorn/gifs">
+        <file>unicorn_eat.gif</file>
+        <file>unicorn_sleep.gif</file>
+        <file>unicorn_swim.gif</file>
+        <file>unicorn1.gif</file>
+    </qresource>
+    <qresource prefix="/pets/raccoon/audio">
+        <file>raccoon.mp3</file>
+        <file>raccoon_feed.mp3</file>
+    </qresource>
+    <qresource prefix="/pets/unicorn/audio">
+        <file>unicorn.mp3</file>
+        <file>unicorn_feed.mp3</file>
+    </qresource>
+    <qresource prefix="/pets/dragon/gifs">
+        <file>dragon_sleep.gif</file>
+        <file>dragon1.gif</file>
+        <file>dragon_eat.gif</file>
+        <file>dragon_swim.gif</file>
+    </qresource>
+    <qresource prefix="/pets/dragon/audio">
+        <file>dragon.mp3</file>
+        <file>dragon_feed.mp3</file>
+        <file>dragon_swim.mp3</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>unicorn_feed.wav</file>
+    </qresource>
+</RCC>
