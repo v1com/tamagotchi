@@ -30,9 +30,9 @@ food::food(QObject *parent):QObject(parent),QGraphicsPixmapItem()
     foodItm[13] = ":/feeding/strawberry30.png";
     foodItm[14] = ":/feeding/strawberry40.png";
 
-    srand(time(NULL));
+
     int numberItem = rand() % 15;
-    int posItem = rand() % 580;
+    int posItem = rand() % 680;
 
     setPixmap(QPixmap(foodItm[numberItem]));
     setPos(posItem,0);
@@ -51,7 +51,7 @@ void food::move()
         if(typeid(*(colliding_item[i])) == typeid(Basket)){
             fd->score->increase();
             scene()->removeItem(this);
-            delete this;
+            deleteLater();
         }
     }
 
@@ -59,7 +59,7 @@ void food::move()
 
     if(pos().y() > 480){
         scene()->removeItem(this);
-        delete this;
+        deleteLater();
         fd->close();
         return;
     }

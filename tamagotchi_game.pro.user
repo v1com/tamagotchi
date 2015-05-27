@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 3.3.1, 2015-05-27T07:27:47. -->
+<!-- Written by QtCreator 3.3.1, 2015-05-27T12:31:12. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -619,7 +619,7 @@
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.DeployConfigurationCount">1</value>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.PluginSettings">
-    <value type="QString" key="AndroidDeviceSerialNumber">0c29558c</value>
+    <value type="QString" key="AndroidDeviceSerialNumber">04e797e6002e751d</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.0">
     <valuelist type="QVariantList" key="Analyzer.Valgrind.AddedSuppressionFiles"/>

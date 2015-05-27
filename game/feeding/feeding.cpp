@@ -6,6 +6,8 @@
 #include <QDesktopWidget>
 #include <QApplication>
 #include <QEvent>
+#include <QMouseEvent>
+#include "time.h"
 
 Feeding::Feeding(QWidget *parent)
 {
@@ -38,11 +40,43 @@ Feeding::Feeding(QWidget *parent)
     scene->addItem(score);
 
     scene->setBackgroundBrush(QBrush(QImage(":/feeding/backgroundPark1.png")));
+    setAttribute(Qt::WA_AcceptTouchEvents);
+    setMouseTracking(true);
+    isPress = false;
+    srand(time(NULL));
+}
+
+void Feeding::mousePressEvent(QMouseEvent *event)
+{
+    isPress=true;
+
+        if(event->x()<300 && event->x()>0 && basket->pos().x() > 0)
+        {
+            basket->setPos(basket->x()-15,basket->y());
+        }
+        else if(event->x() <850 && event->x() >600 && basket->pos().x() < 700)
+        {
+            basket->setPos(basket->x()+15,basket->y());
+        }
+
+}
+
+void Feeding::mouseMoveEvent(QMouseEvent *event)
+{
+
+    if(event->x()<300 && event->x()>0 && basket->pos().x() > 0)
+    {
+        basket->setPos(basket->x()-45,basket->y());
+    }
+    else if(event->x() <900 && event->x() >600 && basket->pos().x() < 700)
+    {
+        basket->setPos(basket->x()+45,basket->y());
+    }
 }
 
 Feeding::~Feeding()
 {
-    delete basket;
+
 }
 
 void Feeding::spawn()

@@ -9,14 +9,14 @@ Racing::Racing(QWidget * parent):QGraphicsView(parent)
     //add scene
     scene = new Track();
     scene->clearFocus();
-    scene->setSceneRect(0,0,300,410);
+    scene->setSceneRect(0,0,QApplication::desktop()->width(),QApplication::desktop()->height());
     setScene(scene);
 
     // view->setFixedSize(310,420);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(QApplication::desktop()->width(),QApplication::desktop()->height());
-   // QApplication::desktop()->screenGeometry().x();
+    //QApplication::desktop()->screenGeometry().x();
 
 
     //add player car
@@ -27,7 +27,7 @@ Racing::Racing(QWidget * parent):QGraphicsView(parent)
     QObject::connect(spawnTimer,SIGNAL(timeout()),this,SLOT(spawn()));
     QObject::connect(spawnTimer,SIGNAL(timeout()),this,SLOT(incSpeed()));
 
-    spawnTimer->start(1500);
+    spawnTimer->start(2500);
 
     //add score
     score = new Score();

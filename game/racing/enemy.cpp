@@ -16,9 +16,9 @@ Enemy::Enemy(float speed,QObject * parent) :QObject(parent),QGraphicsPixmapItem(
     _speed=speed;
 
     int posEnemy[3];
-    posEnemy[0]=17;
-    posEnemy[1]=121;
-    posEnemy[2]=225;
+    posEnemy[0]=121;
+    posEnemy[1]=posEnemy[0]+QApplication::desktop()->width()/3;
+    posEnemy[2]=posEnemy[1]+QApplication::desktop()->width()/3;
 
     //srand(time(NULL));
 
@@ -31,8 +31,8 @@ Enemy::Enemy(float speed,QObject * parent) :QObject(parent),QGraphicsPixmapItem(
     QTimer * timer = new QTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(move()));
 
-    timer->start(10);    
-
+    timer->start(1);
+    setScale(2);
 }
 
 int Enemy::getPositionX()

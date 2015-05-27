@@ -5,6 +5,8 @@
 #include <QGraphicsRectItem>
 #include <QList>
 #include "racing.h"
+#include <QApplication>
+#include <QDesktopWidget>
 
 class Enemy : public QObject,public QGraphicsPixmapItem
 {

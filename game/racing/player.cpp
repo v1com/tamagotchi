@@ -8,4 +8,5 @@ Player::Player(QObject * parent):QObject(parent),QGraphicsPixmapItem()
     setPos(121,295);
     setFlag(QGraphicsItem::ItemIsFocusable);
     setFocus();
+    setScale(2);
 }

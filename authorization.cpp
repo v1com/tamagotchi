@@ -17,7 +17,6 @@ Authorization::Authorization(QWidget *parent) :
     ui->addPlayerBtn->hide();
     setLayout(ui->verticalLayout);
     resize(DesctopWidth,DesctopHeight);
-    ui->verticalLayout;
     move(DesctopWidth/4,0);
 
 

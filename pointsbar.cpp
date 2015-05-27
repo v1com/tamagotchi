@@ -17,10 +17,10 @@ void PointsBar::paintEvent(QPaintEvent *pe)
     QString s = QString::number(level) + "%";
     p.setPen(Qt::black);
     p.setBrush(Qt::white);
-    p.drawRect(0,0,100,20);
+    p.drawRect(0,0,100,40);
     p.setBrush(Qt::green);
-    p.drawRect(0,0,level,20);
-    p.drawText(40,10, s);
+    p.drawRect(0,0,level,40);
+   // p.drawText(40,10, s);
     update();
 }
 

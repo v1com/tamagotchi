@@ -59,8 +59,6 @@ RESOURCES += \
 
 OTHER_FILES +=
 
-RC_FILE = myapp.rc
-
 DISTFILES += \
     android/gradle/wrapper/gradle-wrapper.jar \
     android/AndroidManifest.xml \
